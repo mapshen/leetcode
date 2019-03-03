@@ -35,5 +35,3 @@ Minesweeper (529)
 https://leetcode.com/problems/minesweeper/
 
 Solution: [529.py](529.py)
-
-
