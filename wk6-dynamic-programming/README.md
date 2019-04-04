@@ -13,7 +13,7 @@
 [Leetcode 152: Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/)
 
 ## Problem 5
-[Leetcode 213. House Robber II](https://leetcode.com/problems/house_robber_ii/)
+[Leetcode 213. House Robber II](https://leetcode.com/problems/house-robber-ii/)
 
 ## Problem 6
 [Leetcode 639. Decode Ways II](https://leetcode.com/problems/decode-ways-ii/)
