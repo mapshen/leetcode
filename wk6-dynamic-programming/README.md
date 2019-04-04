@@ -16,5 +16,5 @@
 [Leetcode 213. House Robber II](https://leetcode.com/problems/house_robber_ii/)
 
 ## Problem 6
-[Leetcode 639. Decode Ways II](https://leetcode.com/problems/decode_ways_ii/)
+[Leetcode 639. Decode Ways II](https://leetcode.com/problems/decode-ways-ii/)
 
