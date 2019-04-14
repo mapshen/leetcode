@@ -1,0 +1,25 @@
+class Solution:
+    def canFinish(self, numCourses: int, prequisites: List[List[int]]) -> bool:
+
+        if numCourses == None or prequisites == None:  return None  
+        graph = [[] for _ in range(numCourses)]
+        for x, y in prequisites:
+            graph[x].append(y)   
+
+        paint = [0 for _ in range(numCourses)]
+      
+        def dfs(i):
+            if paint[i] == -1: 
+                return False
+            if paint[i] == 1: 
+                return True
+            paint[i] = -1 
+            for j in graph[i]: 
+                if not dfs(j): 
+                    return False
+            paint[i] = 1 
+            return True
+        for i in range(numCourses):
+            if not dfs(i): 
+                return False
+        return True
