@@ -1,0 +1,76 @@
+Problem 1
+LEETCODE 23: Merge K Sorted Arrays
+
+from Queue import PriorityQueue
+
+class Solution(object):
+    def mergeKLists(self, lists):
+        """
+        :type lists: List[ListNode]
+        :rtype: ListNode
+        """
+        head = point = ListNode(0)
+        q = PriorityQueue()
+        for l in lists:
+            if l:
+                q.put((l.val, l))
+        while not q.empty():
+            val, node = q.get()
+            point.next = ListNode(val)
+            point = point.next
+            node = node.next
+            if node:
+                q.put((node.val, node))
+        return head.next
+
+
+Problem 2
+LEETCODE 43: Multiply Strings
+
+
+
+Problem 3
+LEETCODE 4: Median of Two Sorted Arrays
+C++ Version
+
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        int size1; int size2;
+        int total;
+        
+        size1=nums1.size();
+        size2=nums2.size();
+        total=size1+size2;
+        
+        if(total%2==1){
+            return fms(nums1,0,nums2,0,total/2+1);
+        }else{
+            return (fms(nums1,0,nums2,0,total/2)+fms(nums1,0,nums2,0,total/2+1))/2;
+        }
+        
+    }
+    
+    double fms(vector<int> &nums1, int i, vector<int> &nums2, int j, int k) {
+        if (nums1.size() - i > nums2.size() - j) return fms(nums2, j, nums1, i, k);
+        if (nums1.size() == i) return nums2[j + k - 1];
+        if (k == 1) return min(nums1[i], nums2[j]);
+        int pa = min(i + k / 2, int(nums1.size())), pb = j + k - pa + i;
+        if (nums1[pa - 1] < nums2[pb - 1]) 
+            return fms(nums1, pa, nums2, j, k - pa + i);
+        else if (nums1[pa - 1] > nums2[pb - 1]) 
+            return fms(nums1, i, nums2, pb, k - pb + j);
+        else 
+            return nums1[pa - 1];
+    }
+};
+
+
+Problem 4
+LEETCODE 215: Kth Largest Element in an Array
+
+Problem 5
+LEETCODE 240: Search a 2D Matrix II
+
+Problem 6
+LEETCODE 932: Beautiful Array
