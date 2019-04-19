@@ -1,0 +1,50 @@
+Problem 1
+Leetcode 85: Maximal Rectangles
+
+Problem 2
+Leetcode 188: Best Time to Buy and Sell Stock IV
+
+import pprint
+import sys
+class Solution(object):
+    def maxProfit(self, k, prices):
+        """
+        :type k: int
+        :type prices: List[int]
+        :rtype: int
+        """
+        lenP = len(prices)
+        if k > 0.5 * lenP:
+            return( sum ( i - j for i, j in zip( prices[1:], prices[:-1] ) if i-j > 0 ) )
+        elif k ==0:
+            return 0
+        else:
+            cprofit = []
+            llmaxp = 0 
+            llmin = prices[0] 
+            for i in range(lenP):
+                llmin = min(prices[i],llmin)
+                llmaxp = max(llmaxp, prices[i] - llmin)  
+                cprofit.append(llmaxp) 
+            gprofit = [[0 for i in range(lenP)] for j in range(k)]
+            gprofit[0] = cprofit
+
+            for i in range(1,k):
+                ccprofit = 0
+                for j in range(1,lenP):
+                    ccprofit = max(ccprofit+prices[j]-prices[j-1], gprofit[i-1][j-1]+prices[j]-prices[j-1], gprofit[i-1][j-1])
+                    gprofit[i][j] = max(gprofit[i][j-1],ccprofit)
+        return gprofit[k-1][-1]
+
+
+Problem 3
+Leetcode 139: Word Break
+
+Problem 4
+Leetcode 152: Maximum Product Subarray
+
+Problem 5
+Leetcode 213. House Robber II
+
+Problem 6
+Leetcode 639. Decode Ways II
