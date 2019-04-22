@@ -175,10 +175,47 @@ class Solution(object):
         return total_importance
  
  
-  ## Problem 6		 ## Problem 6
+ ## Problem 6	
  #problem description and/or link here#		 Minesweeper (529)   
  https://leetcode.com/problems/minesweeper/
  
+ 
+class Solution(object):
+    def updateBoard(self, board, click):
+        """
+        :type board: List[List[str]]
+        :type click: List[int]
+        :rtype: List[List[str]]
+        """
+        if not board or not click:
+            return board
+        m=len(board)
+        n=len(board[0])
+        if board[click[0]][click[1]]=='M':
+            board[click[0]][click[1]]='X'
+            return board
+        q=collections.deque()
+        q.append((click[0],click[1]))
+        while(len(q)):
+            x,y=q.popleft()
+            cnt=0
+            t=[]
+            for dx,dy in [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]]:
+                nx=x+dx
+                ny=y+dy
+                if(nx>=0 and nx<m and ny>=0 and ny<n):
+                    if board[nx][ny]=='M':
+                        cnt+=1
+                    if board[nx][ny]=='E':
+                        t.append((nx,ny))
+            if cnt==0:
+                board[x][y]='B'
+                for i in t:
+                    if i not in q:
+                        q.append(i)               
+            else:
+                board[x][y]=str(cnt)
+        return board
  
  
  
