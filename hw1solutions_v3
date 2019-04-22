@@ -1,0 +1,30 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def rightSideView(self, root: TreeNode) -> List[int]:
+        List = []
+        def helper(root: TreeNode, depth):
+            if not root: return
+            if len(List) < depth:
+                List.append(root.val);
+            else:
+                List[depth-1] = root.val
+            helper(root.left,depth+1)
+            helper(root.right,depth+1)
+        helper(root,1)
+        return List
+        
+            
+            
+                
+                
+                
+    
+        
+        
+        
