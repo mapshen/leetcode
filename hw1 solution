@@ -1,0 +1,61 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+## inorder travesal 出来的结果对称并不能保证tree对称
+class Solution:
+    def isSymmetric(self, root: TreeNode) -> bool:
+        def dfsleft(root, indorder1):
+            if not root:
+                return
+            else:
+                if root.right and not root.left:
+                    inorder1.append(root.val)
+                    inorder1.append(None)
+                    dfsleft(root.right,inorder1)
+                elif root.left and not root.right:
+                    inorder1.append(root.val)
+                    dfsleft(root.left,inorder1)
+                    inorder1.append(None)
+                elif not root.left and not root.right:
+                    inorder1.append(root.val)
+                    inorder1.append(None)
+                    inorder1.append(None)
+                else:
+                    inorder1.append(root.val)
+                    dfsleft(root.left,inorder1)
+                    dfsleft(root.right,inorder1)
+        def dfsright(root, indorder2):
+            if not root:
+                return
+            else:
+                if root.right and not root.left:
+                    inorder2.append(root.val)
+                    dfsright(root.right,inorder2)
+                    inorder2.append(None)
+                elif root.left and not root.right:
+                    inorder2.append(root.val)
+                    inorder2.append(None)
+                    dfsright(root.left,inorder2)
+                elif not root.left and not root.right:
+                    inorder2.append(root.val)
+                    inorder2.append(None)
+                    inorder2.append(None)
+                else:
+                    inorder2.append(root.val)
+                    dfsright(root.right,inorder2)
+                    dfsright(root.left,inorder2)
+        
+        inorder1= []
+        dfsleft(root,inorder1)
+        inorder2= []
+        dfsright(root,inorder2)
+        print(inorder1)
+        print(inorder2)
+        for i in range(len(inorder1)):
+            if inorder1[i]!=inorder2[i]:
+                return False
+        return True

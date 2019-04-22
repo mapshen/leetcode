@@ -1,0 +1,55 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def smallestFromLeaf(self, root: TreeNode) -> str:
+        paths = []
+        curpath = []
+        def dfs(root: TreeNode, paths, curpath):
+            print(root.val)
+            if not root:
+                return
+            if (not root.left) and (not root.right):
+                curpath = curpath + [0]
+                curpath.pop()
+                curpath.insert(0, root.val)
+                paths.append(curpath)
+            elif not root.left:
+                curpath = curpath + [0]
+                curpath.pop()
+                curpath.insert(0, root.val) 
+                dfs(root.right,paths, curpath)
+            elif not root.right:
+                curpath = curpath + [0]
+                curpath.pop()
+                curpath.insert(0, root.val)
+                dfs(root.left,paths, curpath)
+            else:
+                curpath = curpath + [0]
+                curpath.pop()
+                curpath.insert(0, root.val) 
+                dfs(root.left,paths, curpath)
+                dfs(root.right,paths, curpath)
+        dict ={0:"a",1:"b",2:"c",3:"d",4:"e",5:"f",6:"g",7:"h",8:"i",9:"j",10:"k",11:"l",12:"m",13:"n",14:"o",15:"p",16:"q",17:"r",18:"s",19:"t",20:"u",21:"v",22:"w",23:"x",24:"y",25:"z"}
+       
+        dfs(root,paths,curpath)
+        numlist = min(paths)
+        print(numlist)
+        a = ""
+        for i in range(len(numlist)):
+            a = a + dict[numlist[i]]
+        return a
+    
+            
+            
