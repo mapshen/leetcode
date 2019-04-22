@@ -157,3 +157,60 @@ class Solution(object):
 Problem 6
 980 Unique Paths III https://leetcode.com/problems/unique-paths-iii/
 
+class Solution(object):
+    def uniquePathsIII(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        rows = len(grid)
+        cols = len(grid[0])
+        
+        visited = [[False for i in range(cols)] for j in range (rows)]
+        numZeros = 0 
+        startRow = -1
+        startCol = -1
+        
+        for i in range(rows):
+            for j in range(cols):
+                if grid[i][j] == -1:
+                    visited[i][j] = True
+                elif grid[i][j] == 0:
+                    numZeros += 1
+                elif grid[i][j] == 1:
+                    startRow = i
+                    startCol = j
+                    
+        return self.dfs(rows, cols, startRow, startCol, grid, visited, numZeros, 0, 0)
+        
+    def dfs(self, rows, cols, row, col, grid, visited, numZeros, visitedZeros, score):
+        visited[row][col] = True
+        
+        if grid[row][col] == 0:
+            visitedZeros += 1
+        elif grid[row][col] == 2:
+            if visitedZeros == numZeros:
+                score += 1
+            visited[row][col] = False
+            return score
+        
+        #left top right down
+        if row > 0 and not visited[row-1][col]:
+            score = self.dfs(rows, cols, row-1, col, grid, visited, numZeros, visitedZeros, score)
+        
+        if col > 0 and not visited[row][col-1]:
+            score = self.dfs(rows, cols, row, col-1, grid, visited, numZeros, visitedZeros, score)
+         
+        if row < rows-1 and not visited[row+1][col]:
+            score = self.dfs(rows, cols, row+1, col, grid, visited, numZeros, visitedZeros, score)
+            
+        if col < cols-1 and not visited[row][col+1]:
+            score = self.dfs(rows, cols, row, col+1, grid, visited, numZeros, visitedZeros, score)
+        
+        if grid[row][col] == 0:
+            visitedZeros -= 1
+        visited[row][col] = False
+        return score
+        
+ 
+
