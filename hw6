@@ -1,0 +1,37 @@
+class Solution {
+    public int splitArray(int[] nums, int m) {
+        double sum=0;
+        for(int i=0;i<nums.length;i++){
+            sum = sum+nums[i];
+        }
+        double high = sum;
+        double low = sum/nums.length-1;
+        double mid;
+        while(high>low+1){
+            mid = low + (high-low)/2;
+            int k = 1;
+            double tempsum = 0;
+            for (int i=0; i<nums.length; i++){
+                if(nums[i]>mid){
+                    low = mid;
+                }
+                else if(tempsum+nums[i]<=mid){
+                    tempsum += nums[i];
+                }
+                else{
+                    tempsum = nums[i];
+                    k++;
+                }
+            }
+            if(k>m && low != mid){
+                low = mid;
+            }
+            else if(low==mid){
+            }
+            else{
+                high = mid;
+            }
+        }
+        return (int)high;
+    }
+}

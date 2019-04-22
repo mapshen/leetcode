@@ -1,0 +1,66 @@
+class Solution {
+    public int kthSmallest(int[][] matrix, int k) {
+        class point{
+            int value;
+            int row;
+            int col;
+            point left;
+            point right;
+            public point(int value, int row, int col){
+                this.value=value;
+                this.row=row;
+                this.col = col;
+                this.left=null;
+                this.right=null;
+            }
+        }
+        point start = new point(matrix[0][0],0,0);
+        point temp = new point(0,0,0);
+        start.right = temp;
+        temp.left= start;
+        for(int i=1; i<matrix.length; i++){
+            point points = new point(matrix[i][0],i,0);
+            temp.left.right=points;
+            points.left = temp.left;
+            points.right = temp;
+            temp.left = points;
+        }
+        int tempk = 1;
+        int min = matrix[0][0];
+        int newi, newj;
+        point t;
+        while(tempk<k){
+            t = start;
+            while(t.col+1 >= matrix.length){
+                t = t.right;
+            }
+            if(t==temp){
+                start=start.right;
+            }
+            else{
+                newi = t.row;
+                newj = t.col + 1;
+                point newpoint = new point(matrix[newi][newj],newi,newj);
+                t = start;
+                while(newpoint.value >= t.value && t != temp){
+                    t = t.right;
+                }
+                newpoint.left=t.left;
+                newpoint.right = t.left.right;
+                newpoint.left.right = newpoint;
+                newpoint.right.left = newpoint;
+                point t1 = newpoint;
+                while(t1!=start){
+                    t1=t1.left;
+                    if(t1.row == newi){
+                        t1.col = newj;                        
+                    }
+                }
+                start=start.right;
+            }
+            min = start.value;
+            tempk++;
+        }
+        return min;
+    }
+}

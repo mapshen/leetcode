@@ -1,0 +1,27 @@
+class Solution {
+    public char nextGreatestLetter(char[] letters, char target) {
+        int high = letters.length - 1;
+        int low = 0;
+        int mid;
+        if(letters[low]>target){
+            return letters[low];
+        }
+        else if (target>=letters[high]){
+            return letters[0];
+        }
+        else{
+            while(high > low + 1){
+                mid = (high+low)/2;
+                if(letters[mid]>target){
+                    high = mid;
+                }
+                else {
+                    low = mid;
+                }
+            }
+            return letters[high];
+        }
+        
+        
+    }
+}
