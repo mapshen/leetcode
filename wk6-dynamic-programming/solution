@@ -1,6 +1,27 @@
 Problem 1
 Leetcode 85: Maximal Rectangles
 
+class Solution(object):
+    def maximalRectangle(self, matrix):
+        
+        if not matrix or not matrix[0]:
+            return 0
+        n = len(matrix[0])
+        height = [0] * (n + 1)
+        ans = 0
+        for row in matrix:
+            for i in xrange(n):
+                height[i] = height[i] + 1 if row[i] == '1' else 0
+            stack = [-1]
+            for i in xrange(n + 1):
+                while height[i] < height[stack[-1]]:
+                    h = height[stack.pop()]
+                    w = i - 1 - stack[-1]
+                    ans = max(ans, h * w)
+                stack.append(i)
+        return ans
+
+
 Problem 2
 Leetcode 188: Best Time to Buy and Sell Stock IV
 
@@ -40,11 +61,100 @@ class Solution(object):
 Problem 3
 Leetcode 139: Word Break
 
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        """
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: bool
+        """
+        return self.breakw(s, wordDict)
+        
+    def breakw(self, s, d):
+        dd = set()
+        for w in d:
+            if w in s:
+                dd.add(w)
+
+        dp = [False for i in range(len(s)+1)]
+        dp[0] = True
+
+        for i in range(1, len(s)+1):
+            for w in dd:
+                if s[i-len(w):i] == w:
+                    dp[i] = dp[i] or dp[i-len(w)]
+                    if dp[i]:
+                        break
+        return dp[len(s)]
+        
+
 Problem 4
 Leetcode 152: Maximum Product Subarray
+
+class Solution(object):
+    def maxProduct(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return None
+            
+        global_max = prev_max = prev_min = nums[0]
+        for num in nums[1:]:
+            if num > 0:
+                curt_max = max(num, prev_max * num)
+                curt_min = min(num, prev_min * num)
+            else:
+                curt_max = max(num, prev_min * num)
+                curt_min = min(num, prev_max * num)
+            
+            global_max = max(global_max, curt_max)
+            prev_max, prev_min = curt_max, curt_min
+            
+        return global_max
 
 Problem 5
 Leetcode 213. House Robber II
 
+class Solution(object):
+    def rob(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return 0
+        
+        return max(nums[0] + self._rob(nums[2:-1]), nums[-1] + self._rob(nums[1:-2]), self._rob(nums[1:-1]))
+    
+    def _rob(self, nums):
+        prepre = 0
+        pre = 0
+        for i in range(len(nums)):
+            cur = max(prepre + nums[i], pre)
+            prepre = pre
+            pre = cur
+            
+        return pre
+
 Problem 6
 Leetcode 639. Decode Ways II
+
+one = {'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1, '8': 1, '9': 1, '*': 9}
+two = {'10': 1, '11': 1, '12': 1, '13': 1, '14': 1, '15': 1, '16': 1, '17': 1, '18': 1, '19': 1, '20': 1, '21': 1,
+       '22': 1, '23': 1, '24': 1, '25': 1, '26': 1, '*0': 2, '*1': 2, '*2': 2, '*3': 2, '*4': 2, '*5': 2, '*6': 2,
+       '*7': 1, '*8': 1, '*9': 1, '1*': 9, '2*': 6, '**': 15}
+
+class Solution(object):
+    def numDecodings(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """        
+        dp = 1, one.get(s[:1], 0)
+
+        for i in xrange(1, len(s)):
+            dp = dp[1], (one.get(s[i], 0) * dp[1] + two.get(s[i-1: i+1], 0) * dp[0]) % 1000000007
+
+        return dp[-1]
