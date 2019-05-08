@@ -1,0 +1,83 @@
+Problem 1
+268. Missing Number
+
+class Solution(object):
+    def missingNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        res = len(nums)
+        for i,each in enumerate(nums):
+            res^=each^i
+        return res
+        
+
+Problem 2
+187. Repeated DNA Sequences
+
+class Solution(object):
+    def findRepeatedDnaSequences(self, s):
+        """
+        :type s: str
+        :rtype: List[str]
+        """
+        if not s:
+            return []
+        
+        ret = set([])
+        lookup = set([])
+        
+        for i in range(len(s)-9): 
+            subStr = s[i:i+10]
+            h = hash(subStr)
+            if h in lookup:
+                ret.add(subStr)
+            else:
+                lookup.add(h)
+        return ret 
+
+
+Problem 3
+260. Single Number III
+
+class Solution(object):
+    def singleNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+        axorb = 0
+        for each in nums:
+            axorb ^=each
+        flag = axorb&(axorb^(axorb-1))
+        res = [0,0]
+        
+        for each in nums:
+            if each&flag!=0:
+                res[0]^=each
+            else:
+                res[1]^=each
+        
+        return res
+        
+
+Problem 4 (Optional)
+411. Minimum Unique Word Abbreviation
+
+class Solution(object):
+    def minAbbreviation(self, target, dictionary):
+        """
+        :type target: str
+        :type dictionary: List[str]
+        :rtype: str
+        """
+        m = len(target)
+        diffs = {sum(2**i for i, c in enumerate(word) if target[i] != c)
+                 for word in dictionary if len(word) == m}
+        if not diffs:
+            return str(m)
+        bits = max((i for i in range(2**m) if all(d & i for d in diffs)),
+                   key=lambda bits: sum((bits >> i) & 3 == 0 for i in range(m-1)))
+        s = ''.join(target[i] if bits & 2**i else '#' for i in range(m))
+        return re.sub('#+', lambda m: str(len(m.group())), s)

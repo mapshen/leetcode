@@ -1,0 +1,163 @@
+Problem 1
+Leetcode 90: Subsets II
+
+class Solution(object):
+    def subsetsWithDup(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        if not nums:
+            return []
+        res = [[]]
+        def dfs(nums,i,temp):
+            if not temp in res:
+                res.append(temp)
+            for j in xrange(i, len(nums)):
+                if j > i and nums[j] == nums[j-1]:
+                    continue
+                dfs(nums,j+1,temp+[nums[j]])
+        nums.sort()        
+        dfs(nums,0,[])
+        
+        return res
+
+
+Problem 2
+Leetcode 52: N-Queens II
+
+class Solution(object):
+    def totalNQueens(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """ 
+        if n<1:
+            return []
+        self.count=0
+        self.DFS(n,0,0,0,0)
+        return self.count
+    
+    def DFS(self,n,row,col,pi,na):
+        if row>=n:
+            self.count+=1
+            return
+        bits= (~(col|pi|na)&((1<<n)-1))
+        while bits>0:
+            p=bits&(-bits)
+            self.DFS(n,row+1,col|p,(pi|p)<<1,(na|p)>>1)
+            bits=bits&(bits-1)
+
+Problem 3
+Leetcode 216: Combination Sum III
+
+class Solution(object):
+    def combinationSum3(self, k, n):
+        res = []
+        self.dfs(xrange(1,10), k, n, 0, [], res)
+        return res
+    
+    def dfs(self, nums, k, n, index, path, res):
+        if k < 0 or n < 0: # backtracking 
+            return 
+        if k == 0 and n == 0: 
+            res.append(path)
+        for i in xrange(index, len(nums)):
+            self.dfs(nums, k-1, n-nums[i], i+1, path+[nums[i]], res)
+
+
+Problem 4
+Leetcode 37: Sudoku Solver
+
+class Solution(object):
+    def solveSudoku(self, board):
+        """
+        :type board: List[List[str]]
+        :rtype: None Do not return anything, modify board in-place instead.
+        """
+        if board == None or len(board) == 0: return
+        
+        A = set('123456789')
+        row = [set() for i in range(9)]
+        col = [set() for i in range(9)]
+        block = [[set() for i in range(3)] for i in range(3)]
+        unfilled = []
+        
+        for i in range(9):
+            for j in range(9):
+                c = board[i][j]
+                if c == '.':
+                    unfilled.append((i, j))
+                else:
+                    row[i].add(c)
+                    col[j].add(c)
+                    block[i//3][j//3].add(c)
+                    
+        def solve(board, unfilled, row, col, block):
+            if len(unfilled) == 0:
+                return True
+            i,j = min(unfilled, key = ret_len)
+            option = A-(row[i]|col[j]|block[i//3][j//3])
+            if len(option) == 0:
+                return False
+            unfilled.remove((i,j))
+            for c in option:
+                board[i][j] = c
+                row[i].add(c)
+                col[j].add(c)
+                block[i//3][j//3].add(c)
+                if solve(board, unfilled, row , col, block):
+                    return True
+                else:
+                    board[i][j] = '.'
+                    row[i].remove(c)
+                    col[j].remove(c)
+                    block[i//3][j//3].remove(c)
+            unfilled.append((i,j))
+            return False
+        def ret_len(args):
+            i,j = args
+            option = A-(row[i]|col[j]|block[i//3][j//3])
+            return len(option)
+                    
+        solve(board, unfilled, row, col, block)
+        
+
+Problem 5
+Leetcode 47: Permutations II
+
+class Solution(object):
+    def permuteUnique(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        ans = [[]]
+        for n in nums:
+            new_ans = []
+            for l in ans:
+                for i in xrange(len(l)+1):
+                    new_ans.append(l[:i]+[n]+l[i:])
+                    if i<len(l) and l[i]==n: break              #handles duplication
+            ans = new_ans
+        return ans
+        
+
+Problem 6
+Leetcode 131: Palindrome Partitioning
+
+class Solution(object):
+    def partition(self, s):
+        res = []
+        self.dfs(s, [], res)
+        return res
+
+    def dfs(self, s, path, res):
+        if not s: # backtracking
+            res.append(path)
+        for i in xrange(1, len(s)+1):
+            if self.isPar(s[:i]):
+                self.dfs(s[i:], path+[s[:i]], res)
+
+    def isPar(self, s):
+        return s == s[::-1]

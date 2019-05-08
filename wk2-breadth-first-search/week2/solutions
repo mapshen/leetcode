@@ -1,0 +1,221 @@
+## Problem 1
+ #problem description and/or link here#		 Binary Tree Right Side View (199)  
+ https://leetcode.com/problems/binary-tree-right-side-view/
+
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def rightSideView(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """
+        if not root:
+            return []
+        res = []
+        criteria = [root]
+        res.append(criteria)
+        while criteria :
+            layers = []
+            for each in criteria: 
+                if each:
+                    if each.left:
+                        layers.append(each.left)
+                    if each.right:
+                        layers.append(each.right)
+            if layers: 
+                res.append(layers)
+            criteria = layers 
+    
+        return [each[-1].val for each in res]
+
+ 
+  ## Problem 2		 ## Problem 2
+ #problem description and/or link here#		 Maximum Depth of Binary Tree (559)  
+ https://leetcode.com/problems/maximum-depth-of-n-ary-tree/
+
+"""
+# Definition for a Node.
+class Node(object):
+    def __init__(self, val, children):
+        self.val = val
+        self.children = children
+"""
+class Solution(object):
+    def maxDepth(self, root):
+        """
+        :type root: Node
+        :rtype: int
+        """
+        if not root:
+            return 0
+        elif root.children ==[]:
+            return 1
+        else:
+            height = [ self.maxDepth(each) for each in root.children if each]
+        return max(height) + 1
+
+ 
+  ## Problem 3		 ## Problem 3
+ #problem description and/or link here#		 Find Bottom Left Tree Value (513)  
+ https://leetcode.com/problems/find-bottom-left-tree-value/
+
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def findBottomLeftValue(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        if not root:
+            return None
+        else:
+            res = [root]
+            rec = [root]
+            while res:
+                layers = []
+                for each in res:
+                    if each.left:
+                        layers.append(each.left)
+                    if each.right:
+                        layers.append(each.right)
+                res = layers
+                if layers:
+                    rec.append(layers)
+        return rec[-1][0].val if len(rec)>1 else rec[0].val
+ 
+ 
+ 
+  ## Problem 4		 ## Problem 4
+ #problem description and/or link here#		 Binary Tree Zigzag Level Order Traversal (103)  
+ https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/
+
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def zigzagLevelOrder(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[List[int]]
+        """
+        if not root:
+            return []
+        else:
+            from collections import deque
+            res = deque([root])
+            flag = 1
+            rec = []
+            while res:
+                layers = []
+                for each in range(len(res)):
+                    curnode = res.popleft()
+                    layers.append(curnode.val)
+                    if curnode.left:
+                        res.append(curnode.left)
+                    if curnode.right:
+                        res.append(curnode.right)
+                if layers:
+                    if flag == -1: 
+                        layers = layers[::-1]
+                    rec.append(layers)
+                flag = flag*(-1)
+            return rec
+ 
+ 
+  ## Problem 5		 ## Problem 5
+ #problem description and/or link here#		 Employee Importance (690)  
+ https://leetcode.com/problems/employee-importance/
+
+"""
+# Employee info
+class Employee(object):
+    def __init__(self, id, importance, subordinates):
+        # It's the unique id of each node.
+        # unique id of this employee
+        self.id = id
+        # the importance value of this employee
+        self.importance = importance
+        # the id of direct subordinates
+        self.subordinates = subordinates
+"""
+class Solution(object):
+    def getImportance(self, employees, id):
+        """
+        :type employees: Employee
+        :type id: int
+        :rtype: int
+        """
+        total_importance = 0
+        employee_dict = {employee.id:employee for employee in employees  }
+            
+        candidates_list = [employee_dict[id]]
+        
+        while candidates_list:
+            e = candidates_list.pop()
+            total_importance += e.importance
+            for employee in e.subordinates:
+                candidates_list.append(employee_dict[employee])
+                
+        return total_importance
+ 
+ 
+ ## Problem 6	
+ #problem description and/or link here#		 Minesweeper (529)   
+ https://leetcode.com/problems/minesweeper/
+ 
+ 
+class Solution(object):
+    def updateBoard(self, board, click):
+        """
+        :type board: List[List[str]]
+        :type click: List[int]
+        :rtype: List[List[str]]
+        """
+        if not board or not click:
+            return board
+        m=len(board)
+        n=len(board[0])
+        if board[click[0]][click[1]]=='M':
+            board[click[0]][click[1]]='X'
+            return board
+        q=collections.deque()
+        q.append((click[0],click[1]))
+        while(len(q)):
+            x,y=q.popleft()
+            cnt=0
+            t=[]
+            for dx,dy in [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]]:
+                nx=x+dx
+                ny=y+dy
+                if(nx>=0 and nx<m and ny>=0 and ny<n):
+                    if board[nx][ny]=='M':
+                        cnt+=1
+                    if board[nx][ny]=='E':
+                        t.append((nx,ny))
+            if cnt==0:
+                board[x][y]='B'
+                for i in t:
+                    if i not in q:
+                        q.append(i)               
+            else:
+                board[x][y]=str(cnt)
+        return board
+ 
+ 
+ 
